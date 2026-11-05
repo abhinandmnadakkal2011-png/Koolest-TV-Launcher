@@ -657,7 +657,7 @@ class MainActivity : Activity() {
         val item = itemOf(v)
         val strip = item.parent as ViewGroup
         if (strip.indexOfChild(item) > 0) focusTarget(strip.getChildAt(0))?.requestFocus()
-        else findViewById<View>(R.id.railHome).requestFocus()
+        else firstRowEntry()?.requestFocus()
     }
 
     /** A row item's focusable view: a tile itself, or a card's picture inside its column. */
@@ -1982,7 +1982,7 @@ class MainActivity : Activity() {
         if (v.parent === wifi.parent) return when (key) { // top end buttons
             KeyEvent.KEYCODE_DPAD_DOWN -> lastRowItem?.takeIf { it.isAttachedToWindow } ?: firstRowEntry() ?: v
             KeyEvent.KEYCODE_DPAD_UP -> v
-            KeyEvent.KEYCODE_DPAD_LEFT -> if (v.id == R.id.wifi) findViewById(R.id.railHome) else null
+            KeyEvent.KEYCODE_DPAD_LEFT -> null
             KeyEvent.KEYCODE_DPAD_RIGHT -> if (v.id == R.id.launcherSettings) v else null
             else -> null
         }
@@ -1995,7 +1995,7 @@ class MainActivity : Activity() {
         return when (key) {
             KeyEvent.KEYCODE_DPAD_UP -> if (i <= 0) lastTop?.takeIf { it.isAttachedToWindow } ?: wifi else entry(visible[i - 1])
             KeyEvent.KEYCODE_DPAD_DOWN -> if (i == visible.lastIndex) v else entry(visible[i + 1])
-            KeyEvent.KEYCODE_DPAD_LEFT -> if (at > 0) focusTarget(strip.getChildAt(at - 1)) else if (editing) v else findViewById(R.id.railHome)
+            KeyEvent.KEYCODE_DPAD_LEFT -> if (at > 0) focusTarget(strip.getChildAt(at - 1)) else v
             KeyEvent.KEYCODE_DPAD_RIGHT -> focusTarget(strip.getChildAt(at + 1)) ?: v
             else -> null
         }
@@ -3132,7 +3132,7 @@ class MainActivity : Activity() {
             addView(label(title, 16f).apply {
                 setTypeface(typeface, android.graphics.Typeface.BOLD)
                 alpha = 0.72f
-            }, LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT).apply { marginStart = dp(92) })
+            }, LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT).apply { marginStart = dp(40) })
             // The track starts at the content edge (x 184 px) and glides so the focused item sits there,
             // the ones before it sliding on under the menu; it runs to the screen's end edge.
             addView(SnapScrollView(context, null).apply {
@@ -3140,7 +3140,7 @@ class MainActivity : Activity() {
                 // Items sliding on under the menu fade out as they pass the content edge (x 92), instead of showing
                 // through the glass. Android's fading edge would start at the padding, over the focused item itself.
                 setOnScrollChangeListener { track, x, _, _, _ ->
-                    val edge = dp(92).toFloat()
+                    val edge = dp(40).toFloat()
                     for (i in 0 until strip.childCount) strip.getChildAt(i).let { item ->
                         // How far the item has slid past the content edge, 92 in from the start side (the right, right to left).
                         // strip.left already includes the padding.
@@ -3149,7 +3149,7 @@ class MainActivity : Activity() {
                     }
                 }
                 clipToPadding = false
-                setPaddingRelative(dp(92 - FOCUS_ROOM), 0, dp(48 - FOCUS_ROOM), 0) // items still start at x 92
+                setPaddingRelative(dp(40 - FOCUS_ROOM), 0, dp(48 - FOCUS_ROOM), 0) // items still start at x 92
                 addView(strip)
             }, LinearLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT))
         })
