@@ -237,7 +237,7 @@
             android:id="@+id/shelf"
             android:layout_width="430dp"
             android:layout_height="300dp"
-            android:layout_marginStart="92dp"
+            android:layout_marginStart="40dp"
             android:alpha="0"
             android:gravity="bottom"
             android:orientation="vertical"
@@ -323,13 +323,15 @@
             android:id="@+id/railDim"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:alpha="0" />
+            android:alpha="0"
+            android:visibility="gone" />
 
         <!-- Menu rail: icons in a glass capsule at rest; focus opens it into a card with labels and a white pill on the focused item. -->
         <FrameLayout
             android:id="@+id/rail"
             android:layout_width="320dp"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:visibility="gone">
 
             <!-- Floating glass, centred like the items: a capsule round the icons, and the card it opens into
                  (the focused pill sits 5 dp inside both). Heights are set in buildRail to hug the items. -->
